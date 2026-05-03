@@ -1,0 +1,7 @@
+Generic single-database configuration with an async engine.
+
+Generate a new revision:
+    alembic revision --autogenerate -m "describe change"
+
+Apply migrations:
+    alembic upgrade head
