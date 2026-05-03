@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------
+   Tailwind v4 design tokens — every utility (bg-primary, text-bull, etc.)
+   is generated from this @theme block. Tuned for a dark finance dashboard.
+---------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Surfaces */
+  --color-background: hsl(222 47% 4%);
+  --color-foreground: hsl(210 40% 98%);
+  --color-card: hsl(222 47% 6%);
+  --color-card-foreground: hsl(210 40% 98%);
+
+  /* Brand */
+  --color-primary: hsl(239 84% 67%);            /* indigo — matches globe */
+  --color-primary-foreground: hsl(210 40% 98%);
+  --color-accent: hsl(188 95% 50%);             /* cyan accent */
+  --color-accent-foreground: hsl(222 47% 4%);
+
+  /* Neutrals */
+  --color-secondary: hsl(217 33% 17%);
+  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-muted: hsl(222 47% 11%);
+  --color-muted-foreground: hsl(215 20% 65%);
+  --color-border: hsl(222 24% 14%);
+  --color-input: hsl(222 24% 14%);
+  --color-ring: hsl(239 84% 67%);
+
+  /* Finance semantics */
+  --color-bull: hsl(152 76% 44%);               /* emerald — long  */
+  --color-bear: hsl(348 89% 60%);               /* rose    — short */
+  --color-destructive: hsl(0 72% 51%);
+
+  /* Globe-era indigo aliases (kept so existing globe code keeps working) */
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-slate-900: #0f172a;
+  --color-slate-800: #1e293b;
+
+  --radius: 0.875rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ----------------------------------------------------------------------
+   Component utilities
+---------------------------------------------------------------------- */
+.card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(51, 65, 85, 1);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.glass-panel {
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--color-border) 60%, transparent);
+  background: color-mix(in oklab, var(--color-card) 60%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.signal-glow-bull {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-bull) 20%, transparent),
+    0 0 24px -8px color-mix(in oklab, var(--color-bull) 45%, transparent);
+}
+.signal-glow-bear {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-bear) 20%, transparent),
+    0 0 24px -8px color-mix(in oklab, var(--color-bear) 45%, transparent);
+}
+
+.active-ring {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 15px color-mix(in oklab, var(--color-primary) 30%, transparent);
+}
+
+.glow-effect {
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at center, color-mix(in oklab, var(--color-primary) 10%, transparent) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.markdown-body {
+  color: color-mix(in oklab, white 80%, transparent);
+  line-height: 1.7;
+}
+
+/* ----------------------------------------------------------------------
+   Scrollbars
+---------------------------------------------------------------------- */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--color-muted-foreground) 40%, transparent);
+}
+
+/* Existing side-panel scrollbar override (kept) */
+#side-panel::-webkit-scrollbar { width: 4px; }
+#side-panel::-webkit-scrollbar-track { background: transparent; }
+#side-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
