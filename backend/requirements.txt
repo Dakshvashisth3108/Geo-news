@@ -19,6 +19,21 @@ python-jose[cryptography]==3.3.0
 # --- WebSockets ---
 websockets==13.1
 
+# --- NLP ---
+# Pin torch to the CPU build to keep the deploy slug small. On Render the
+# default index already serves CPU wheels for linux/x86_64; if you switch
+# providers, prefer:
+#   pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==2.5.1
+torch==2.5.1
+transformers==4.46.3
+spacy==3.7.6
+# spaCy model is installed as a separate post-install step:
+#   python -m spacy download en_core_web_sm
+
+# --- Cache ---
+# Optional. Service runs fine without Redis (cache becomes a no-op).
+redis[hiredis]==5.2.1
+
 # --- Utilities ---
 python-multipart==0.0.20
 httpx==0.28.1

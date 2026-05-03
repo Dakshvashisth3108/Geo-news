@@ -41,6 +41,19 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str | None = None
     NEWS_API_KEY: str | None = None
 
+    # --- NLP service ---
+    # Hugging Face model IDs. Override per-environment if you ship a
+    # fine-tuned variant or want a smaller model on tight memory.
+    NLP_FINBERT_MODEL: str = "ProsusAI/finbert"
+    NLP_ZSC_MODEL: str = "facebook/bart-large-mnli"
+    NLP_NER_MODEL: str = "en_core_web_sm"
+
+    # --- Cache (Redis) ---
+    # Leave unset to disable NLP result caching. Format:
+    #   redis://:password@host:6379/0
+    REDIS_URL: str | None = None
+    NLP_CACHE_TTL_SECONDS: int = 3600
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
