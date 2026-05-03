@@ -41,7 +41,12 @@ class TradingSignalBase(BaseModel):
     uncertainty: float = Field(ge=0.0, le=1.0)
     gti: float = Field(ge=0.0, le=100.0, description="Geopolitical Tension Index")
     explanation: str = Field(min_length=1)
-    correlated_assets: list[CorrelatedAsset] = Field(default_factory=list)
+    correlated_assets: list[CorrelatedAsset] = Field(
+        default_factory=list,
+        # Bound the basket so the JSONB field can't grow unboundedly if a
+        # correlation engine misbehaves. 32 is generous for an MVP UI.
+        max_length=32,
+    )
     event_id: UUID | None = None
 
 
