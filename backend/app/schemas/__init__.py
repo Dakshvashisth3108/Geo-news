@@ -20,6 +20,11 @@ from app.schemas.alert import (
     NotificationChannel,
 )
 from app.schemas.correlation import AnalyzeCorrelationRequest, CorrelationAnalysis
+from app.schemas.scenario import (
+    ExtractedFacts,
+    ScenarioSimulateRequest,
+    ScenarioSimulateResponse,
+)
 
 __all__ = [
     "UserCreate",
@@ -39,4 +44,7 @@ __all__ = [
     "NotificationChannel",
     "AnalyzeCorrelationRequest",
     "CorrelationAnalysis",
+    "ExtractedFacts",
+    "ScenarioSimulateRequest",
+    "ScenarioSimulateResponse",
 ]

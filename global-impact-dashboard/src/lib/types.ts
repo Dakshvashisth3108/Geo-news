@@ -92,3 +92,49 @@ export interface ListEventsParams {
 export type WSMessage =
   | { event: 'connected'; data: { stream: string } }
   | { event: 'signal.created'; data: TradingSignal };
+
+
+// ---------------------------------------------------------------------------
+// What-If Scenario Simulator (Feature B)
+// ---------------------------------------------------------------------------
+
+export interface ScenarioSimulateRequest {
+  text: string;
+  severity_hint?: EventSeverity;
+  region_hint?: string;
+  primary_asset_override?: string;
+}
+
+export interface ExtractedFacts {
+  /** "nlp" when full pipeline ran, "heuristic" when fallback ran. */
+  source: 'nlp' | 'heuristic';
+  event_type: EventType;
+  severity: EventSeverity;
+  sentiment_label: string;
+  sentiment_polarity: number;
+  gti_nlp: number;
+  countries_iso: string[];
+  countries_named: string[];
+  assets_mentioned: string[];
+  persons: string[];
+  organizations: string[];
+}
+
+export interface CorrelationProjection {
+  primary_asset: string;
+  direction: SignalDirection;
+  confidence: number;
+  uncertainty: number;
+  gti: number;
+  correlated_assets: CorrelatedAsset[];
+  reasoning: string;
+  signal_id?: string | null;
+}
+
+export interface ScenarioSimulateResponse {
+  text: string;
+  extracted: ExtractedFacts;
+  projection: CorrelationProjection;
+  narrative: string;
+  partial_failures: string[];
+}

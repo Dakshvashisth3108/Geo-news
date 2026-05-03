@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink as RouterNavLink } from 'react-router-dom';
-import { Activity, Bell, Globe2, LineChart, Settings } from 'lucide-react';
+import { Activity, Beaker, Bell, Globe2, LineChart, Settings } from 'lucide-react';
 
 import { Button } from './primitives/Button';
 import { cn } from '../../lib/utils';
@@ -21,6 +21,7 @@ export const Navbar: React.FC = () => {
 
         <nav className="hidden md:flex items-center gap-1 text-sm">
           <NavLink to="/dashboard" icon={<LineChart className="h-4 w-4" />}>Dashboard</NavLink>
+          <NavLink to="/scenario" icon={<Beaker className="h-4 w-4" />}>Scenario</NavLink>
           <NavLink to="/dashboard#signals" icon={<Activity className="h-4 w-4" />}>Signals</NavLink>
           <NavLink to="/dashboard#alerts" icon={<Bell className="h-4 w-4" />}>Alerts</NavLink>
         </nav>

@@ -15,6 +15,8 @@ import type {
   GeopoliticalEvent,
   ListEventsParams,
   ListSignalsParams,
+  ScenarioSimulateRequest,
+  ScenarioSimulateResponse,
   TradingSignal,
   WSMessage,
 } from './types';
@@ -116,6 +118,15 @@ export const api = {
     get: (id: string) => request<GeopoliticalEvent>(`/events/${id}`),
     create: (payload: Omit<GeopoliticalEvent, 'id' | 'ingested_at'>) =>
       request<GeopoliticalEvent>('/events', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+  },
+
+  scenarios: {
+    /** Run the What-If Scenario Simulator on plain-English text. */
+    simulate: (payload: ScenarioSimulateRequest) =>
+      request<ScenarioSimulateResponse>('/scenarios/simulate', {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
