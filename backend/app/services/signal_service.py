@@ -1,15 +1,17 @@
 """Business logic for trading signals.
 
-Keeping persistence + side-effects (broadcasting on the WS bus) together here
-means routes stay thin and orchestration is testable in isolation.
+Routes stay thin; the service orchestrates persistence (via SignalRepository)
+and the realtime fan-out (via the WebSocket manager). This separation lets us
+unit-test orchestration without spinning up HTTP/WebSocket plumbing.
 """
 
+from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.signal import TradingSignal
+from app.repositories.signal_repository import SignalRepository
 from app.schemas.signal import TradingSignalCreate, TradingSignalRead
 from app.utils.websocket_manager import manager
 
@@ -18,42 +20,39 @@ async def list_signals(
     db: AsyncSession,
     *,
     asset: str | None = None,
+    event_id: UUID | None = None,
+    since: datetime | None = None,
+    until: datetime | None = None,
+    min_confidence: float | None = None,
     limit: int = 50,
     offset: int = 0,
 ) -> list[TradingSignal]:
-    stmt = select(TradingSignal).order_by(desc(TradingSignal.timestamp))
-    if asset:
-        stmt = stmt.where(TradingSignal.asset == asset)
-    stmt = stmt.limit(limit).offset(offset)
-
-    result = await db.execute(stmt)
-    return list(result.scalars().all())
+    repo = SignalRepository(db)
+    return await repo.list(
+        asset=asset,
+        event_id=event_id,
+        since=since,
+        until=until,
+        min_confidence=min_confidence,
+        limit=limit,
+        offset=offset,
+    )
 
 
 async def get_signal(db: AsyncSession, signal_id: UUID) -> TradingSignal | None:
-    return await db.get(TradingSignal, signal_id)
+    return await SignalRepository(db).get(signal_id)
 
 
 async def create_signal(
     db: AsyncSession, payload: TradingSignalCreate
 ) -> TradingSignal:
-    signal = TradingSignal(
-        asset=payload.asset,
-        direction=payload.direction,
-        confidence=payload.confidence,
-        uncertainty=payload.uncertainty,
-        gti=payload.gti,
-        explanation=payload.explanation,
-        # Pydantic models -> plain dicts for JSONB storage.
-        correlated_assets=[c.model_dump() for c in payload.correlated_assets],
-    )
-    db.add(signal)
-    await db.commit()
-    await db.refresh(signal)
+    """Persist a signal and broadcast it to every connected WS client."""
+    signal = await SignalRepository(db).create(payload)
 
-    # Push to every connected WS client.
     await manager.broadcast(
-        {"event": "signal.created", "data": TradingSignalRead.model_validate(signal).model_dump()}
+        {
+            "event": "signal.created",
+            "data": TradingSignalRead.model_validate(signal).model_dump(mode="json"),
+        }
     )
-
     return signal
