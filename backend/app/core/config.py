@@ -54,6 +54,21 @@ class Settings(BaseSettings):
     REDIS_URL: str | None = None
     NLP_CACHE_TTL_SECONDS: int = 3600
 
+    # --- Notifications: Email (SMTP) ---
+    # Leave SMTP_HOST unset in dev — the email transport will log instead
+    # of trying to connect, so the rest of the alert pipeline still runs.
+    SMTP_HOST: str | None = None
+    SMTP_PORT: int = 587
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    SMTP_FROM: str | None = None
+    SMTP_USE_TLS: bool = True
+
+    # --- Notifications: defaults ---
+    # Per-rule cooldown can override this; this is just the default for
+    # newly-created rules that don't set one.
+    ALERT_DEFAULT_COOLDOWN_SECONDS: int = 300
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

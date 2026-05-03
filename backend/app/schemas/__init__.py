@@ -11,7 +11,14 @@ from app.schemas.signal import (
     TradingSignalCreate,
     TradingSignalRead,
 )
-from app.schemas.alert import AlertRuleCreate, AlertRuleRead, AlertRuleUpdate
+from app.schemas.alert import (
+    AlertCondition,
+    AlertRuleCreate,
+    AlertRuleRead,
+    AlertRuleUpdate,
+    AlertTestResult,
+    NotificationChannel,
+)
 from app.schemas.correlation import AnalyzeCorrelationRequest, CorrelationAnalysis
 
 __all__ = [
@@ -24,9 +31,12 @@ __all__ = [
     "CorrelatedAsset",
     "TradingSignalCreate",
     "TradingSignalRead",
+    "AlertCondition",
     "AlertRuleCreate",
     "AlertRuleRead",
     "AlertRuleUpdate",
+    "AlertTestResult",
+    "NotificationChannel",
     "AnalyzeCorrelationRequest",
     "CorrelationAnalysis",
 ]

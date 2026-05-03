@@ -3,7 +3,7 @@
 from app.models.user import User
 from app.models.event import EventSeverity, EventType, GeopoliticalEvent
 from app.models.signal import SignalDirection, TradingSignal
-from app.models.alert import AlertOperator, AlertRule
+from app.models.alert import AlertCombinator, AlertOperator, AlertRule
 
 __all__ = [
     "User",
@@ -13,5 +13,6 @@ __all__ = [
     "TradingSignal",
     "SignalDirection",
     "AlertRule",
+    "AlertCombinator",
     "AlertOperator",
 ]
