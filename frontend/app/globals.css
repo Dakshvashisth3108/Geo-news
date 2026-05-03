@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* shadcn/ui-style design tokens, tuned for a dark finance dashboard. */
+@layer base {
+  :root {
+    --background: 222 47% 4%;            /* near-black slate */
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+
+    --primary: 239 84% 67%;              /* indigo (matches globe atmosphere) */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 47% 11%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 188 95% 50%;               /* cyan accent */
+    --accent-foreground: 222 47% 4%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 24% 14%;
+    --input: 222 24% 14%;
+    --ring: 239 84% 67%;
+
+    --bull: 152 76% 44%;                 /* emerald — long signals */
+    --bear: 348 89% 60%;                 /* rose    — short signals */
+
+    --radius: 0.875rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply bg-background text-foreground;
+  }
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+  /* Numerals look professional with tabular figures in tables. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Subtle glow used on signal cards and active widgets. */
+@layer components {
+  .glass-panel {
+    @apply rounded-[var(--radius)] border border-border/60 bg-card/60 backdrop-blur-xl;
+  }
+  .signal-glow-bull {
+    box-shadow: 0 0 0 1px hsl(var(--bull) / 0.2), 0 0 24px -8px hsl(var(--bull) / 0.45);
+  }
+  .signal-glow-bear {
+    box-shadow: 0 0 0 1px hsl(var(--bear) / 0.2), 0 0 24px -8px hsl(var(--bear) / 0.45);
+  }
+}
+
+/* Slim scrollbars across the app. */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
