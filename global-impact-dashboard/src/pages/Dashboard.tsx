@@ -6,8 +6,8 @@ import { Card } from '../components/UI/primitives/Card';
 import { GlobeModel } from '../components/Globe/GlobeScene';
 import { SidePanel } from '../components/UI/SidePanel';
 import { LiveFeed } from '../components/Dashboard/LiveFeed';
-import { HeatmapPlaceholder } from '../components/Dashboard/HeatmapPlaceholder';
-import { TimelinePlaceholder } from '../components/Dashboard/TimelinePlaceholder';
+import { GeopoliticalHeatmap } from '../components/Dashboard/GeopoliticalHeatmap';
+import { CrisisTimeline } from '../components/Dashboard/CrisisTimeline';
 
 /**
  * Main dashboard.
@@ -64,10 +64,14 @@ const Dashboard: React.FC = () => {
           </div>
         </section>
 
-        {/* Heatmap + Timeline */}
+        {/* Heatmap + Timeline — both interactive, click a country on the
+            heatmap to feed it into the same SidePanel the globe uses. */}
         <section className="grid gap-6 lg:grid-cols-2">
-          <HeatmapPlaceholder className="min-h-[360px]" />
-          <TimelinePlaceholder className="min-h-[360px]" />
+          <GeopoliticalHeatmap
+            className="min-h-[420px]"
+            onCountryClick={handleCountryClick}
+          />
+          <CrisisTimeline className="min-h-[420px]" />
         </section>
       </main>
 
